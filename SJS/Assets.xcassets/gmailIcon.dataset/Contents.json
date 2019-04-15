@@ -1,0 +1,13 @@
+{
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "data" : [
+    {
+      "idiom" : "universal",
+      "filename" : "Screen Shot 2019-04-13 at 1.01.54 PM.png",
+      "universal-type-identifier" : "public.png"
+    }
+  ]
+}
