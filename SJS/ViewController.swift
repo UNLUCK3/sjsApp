@@ -65,7 +65,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         formatter2.dateStyle = .none
         dateLabel.text = formatter.string(from: currentDateTime)
         dateLabel2.text = formatter2.string(from: currentDateTime)
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updatedateLabel), userInfo: nil, repeats: true);
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(updatedateLabel), userInfo: nil, repeats: true);
     }
     @objc func updatedateLabel() {
         let DateTime = Date()
