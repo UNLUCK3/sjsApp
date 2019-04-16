@@ -8,8 +8,14 @@
 
 import UIKit
 import SafariServices
+import EventKit
+import EventKitUI
 
-class ViewController: UIViewController, SFSafariViewControllerDelegate {
+class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableViewDataSource, UITableViewDelegate {
+    
+    let eventStore = EKEventStore()
+    
+    var calendars: [EKCalendar]?
     
     //Date formatter for the top dateLabel (dateLabel)
     let formatter = DateFormatter()
@@ -20,6 +26,49 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
     //IBOutlets for the dateLabels
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dateLabel2: UILabel!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var permissionButton: UIButton!
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1 // This was put in mainly for my own unit testing
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let calendars = self.calendars {
+            return calendars.count
+        }
+        
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "basicCell")!
+        
+        if let calendars = self.calendars {
+            let calendarName = calendars[(indexPath as NSIndexPath).row].title
+            cell.textLabel?.text = calendarName
+        } else {
+            cell.textLabel?.text = "Unknown Calendar Name"
+        }
+        
+        return cell
+    }
+    
+    /*
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return eventStore.calendars(for: EKEntityType.event).count // Most of the time my data source is an array of something...  will replace with the actual name of the data source
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Note:  Be sure to replace the argument to dequeueReusableCellWithIdentifier with the actual identifier string!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell")
+        
+        // set cell's textLabel.text property
+        cell!.textLabel?.text = eventStore.calendars(for: EKEntityType.event)[indexPath.row] as? String
+        // set cell's detailTextLabel.text property
+        return cell!
+    }
+    */
     
     //The following code manages the links at the bottom of the screen, and calling in-app safari to show the linked content.
     //When one of the link buttons is pressed, the corresponding logic will be executed
@@ -66,6 +115,11 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        permissionButton.isHidden = true
+        
+        //Requesting access to the calendar
+        requestCalendarAccess()
         //Capture the current date at initialisation
         let currentDateTime = Date()
         
@@ -84,6 +138,24 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updatedateLabel), userInfo: nil, repeats: true);
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        checkCalendarAuthStatus()
+    }
+    
+    func checkCalendarAuthStatus() {
+        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
+        
+        switch (status) {
+        case EKAuthorizationStatus.notDetermined:
+            requestCalendarAccess()
+        case EKAuthorizationStatus.authorized:
+            loadCalendars()
+            refreshTableView()
+        case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
+            break
+        }
+    }
+    
     /*
      This function runs every minute, and updates the dateLabels.
      This function should eventually be split to only update the minutes every minute, and the date every day if time is available.
@@ -98,4 +170,35 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         dateLabel.text = formatter.string(from: DateTime)
         dateLabel2.text = formatter2.string(from: DateTime)
     }
+    
+    func requestCalendarAccess() {
+        eventStore.requestAccess(to: EKEntityType.event, completion: { (accessGranted: Bool, error: Error?) in
+            if accessGranted == true {
+                DispatchQueue.main.async(execute: {
+                    self.loadCalendars()
+                })
+            } else {
+                DispatchQueue.main.async(execute: {
+                    self.needPermissionview()
+                })
+            }
+        })
+    }
+    
+    func loadCalendars() {
+        self.calendars = eventStore.calendars(for: EKEntityType.event)
+    }
+    
+    func needPermissionview() {
+        permissionButton.isHidden = false
+    }
+    @IBAction func permissionButtonPressed(_ sender: Any) {
+        let openSettingsURL = URL(string: UIApplication.openSettingsURLString)
+        UIApplication.shared.openURL(openSettingsURL!)
+    }
+    
+    func refreshTableView() {
+        tableView.reloadData()
+    }
+    
 }
