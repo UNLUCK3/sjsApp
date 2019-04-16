@@ -11,12 +11,14 @@ import SafariServices
 
 class ViewController: UIViewController, SFSafariViewControllerDelegate {
     
+    //Date formatter for the top dateLabel (dateLabel)
     let formatter = DateFormatter()
+    //Date formatter for the bottom dateLabel (dateLabel2)
     let formatter2 = DateFormatter()
     var timer = Timer()
     
-    @IBOutlet weak var dateLabel2: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var dateLabel2: UILabel!
     
     //When one of the link buttons is pressed, the corresponding logic will be executed
     @IBAction func mbopenURL(_ sender: Any) {
