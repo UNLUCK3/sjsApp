@@ -73,7 +73,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         formatter.timeStyle = .none
         formatter.dateStyle = .medium
         //Format the bottom label styles (dateLabel2)
-        formatter2.timeStyle = .short
+        formatter2.timeStyle = .medium
         formatter2.dateStyle = .none
         
         //Update both labels so as to not show the placeholders
@@ -81,7 +81,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         dateLabel2.text = formatter2.string(from: currentDateTime)
         
         //Schedule a timer to update the dateLabels every minute
-        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(updatedateLabel), userInfo: nil, repeats: true);
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updatedateLabel), userInfo: nil, repeats: true);
     }
     
     /*
@@ -93,7 +93,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         let formatter = DateFormatter()
         formatter.timeStyle = .none
         formatter.dateStyle = .long
-        formatter2.timeStyle = .short
+        formatter2.timeStyle = .medium
         formatter2.dateStyle = .none
         dateLabel.text = formatter.string(from: DateTime)
         dateLabel2.text = formatter2.string(from: DateTime)
