@@ -12,6 +12,7 @@
 		722676122262728B002B517A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 722676102262728B002B517A /* Main.storyboard */; };
 		722676142262728D002B517A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 722676132262728D002B517A /* Assets.xcassets */; };
 		722676172262728D002B517A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 722676152262728D002B517A /* LaunchScreen.storyboard */; };
+		72711A05226552BD005F635B /* JTAppleCalendar-master in Resources */ = {isa = PBXBuildFile; fileRef = 72711A04226552BD005F635B /* JTAppleCalendar-master */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		722676132262728D002B517A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		722676162262728D002B517A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		722676182262728D002B517A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		72711A04226552BD005F635B /* JTAppleCalendar-master */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "JTAppleCalendar-master"; path = "../../../../Downloads/JTAppleCalendar-master"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				722676132262728D002B517A /* Assets.xcassets */,
 				722676152262728D002B517A /* LaunchScreen.storyboard */,
 				722676182262728D002B517A /* Info.plist */,
+				72711A04226552BD005F635B /* JTAppleCalendar-master */,
 			);
 			path = SJS;
 			sourceTree = "<group>";
@@ -123,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				722676172262728D002B517A /* LaunchScreen.storyboard in Resources */,
+				72711A05226552BD005F635B /* JTAppleCalendar-master in Resources */,
 				722676142262728D002B517A /* Assets.xcassets in Resources */,
 				722676122262728B002B517A /* Main.storyboard in Resources */,
 			);
