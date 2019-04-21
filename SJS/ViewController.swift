@@ -11,11 +11,11 @@ import SafariServices
 import EventKit
 import EventKitUI
 
-class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, SFSafariViewControllerDelegate {
     
-    let eventStore = EKEventStore()
+    //let eventStore = EKEventStore()
     
-    var calendars: [EKCalendar]?
+    //var calendars: [EKCalendar]?
     
     //Date formatter for the top dateLabel (dateLabel)
     let formatter = DateFormatter()
@@ -26,10 +26,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     //IBOutlets for the dateLabels
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dateLabel2: UILabel!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var permissionButton: UIButton!
+    //@IBOutlet weak var tableView: UITableView!
+    //@IBOutlet weak var permissionButton: UIButton!
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    /*func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1 // This was put in mainly for my own unit testing
     }
     
@@ -52,23 +52,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
         }
         
         return cell
-    }
-    
-    /*
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return eventStore.calendars(for: EKEntityType.event).count // Most of the time my data source is an array of something...  will replace with the actual name of the data source
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Note:  Be sure to replace the argument to dequeueReusableCellWithIdentifier with the actual identifier string!
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell")
-        
-        // set cell's textLabel.text property
-        cell!.textLabel?.text = eventStore.calendars(for: EKEntityType.event)[indexPath.row] as? String
-        // set cell's detailTextLabel.text property
-        return cell!
-    }
-    */
+    }*/
     
     //The following code manages the links at the bottom of the screen, and calling in-app safari to show the linked content.
     //When one of the link buttons is pressed, the corresponding logic will be executed
@@ -116,10 +100,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        permissionButton.isHidden = true
+        //permissionButton.isHidden = true
         
         //Requesting access to the calendar
-        requestCalendarAccess()
+        //requestCalendarAccess()
         //Capture the current date at initialisation
         let currentDateTime = Date()
         
@@ -139,9 +123,9 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        checkCalendarAuthStatus()
+        //checkCalendarAuthStatus()
     }
-    
+    /*
     func checkCalendarAuthStatus() {
         let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
         
@@ -159,7 +143,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     /*
      This function runs every minute, and updates the dateLabels.
      This function should eventually be split to only update the minutes every minute, and the date every day if time is available.
-    */
+    */*/
     @objc func updatedateLabel() {
         let DateTime = Date()
         let formatter = DateFormatter()
@@ -170,7 +154,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
         dateLabel.text = formatter.string(from: DateTime)
         dateLabel2.text = formatter2.string(from: DateTime)
     }
-    
+    /*
     func requestCalendarAccess() {
         eventStore.requestAccess(to: EKEntityType.event, completion: { (accessGranted: Bool, error: Error?) in
             if accessGranted == true {
@@ -199,6 +183,6 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     
     func refreshTableView() {
         tableView.reloadData()
-    }
+    }*/
     
 }
