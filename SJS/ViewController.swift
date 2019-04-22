@@ -80,10 +80,18 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
         // Do any additional setup after loading the view, typically from a nib.
         
         print(tasks)
+        
+        if let data = userD.object(forKey: "tasks") as? NSData {
+            let tasksUnarch = NSKeyedUnarchiver.unarchiveObject(with: data as Data)
+            tasks.append(tasksUnarch as! Task)
+            tableView.reloadData()
+        }
+        
+        /*
         if let tasksData = userD.data(forKey: "savedTasksData"), let tasks = try? JSONDecoder().decode(Task.self, from: tasksData) {
             print(tasks)
             tableView.reloadData()
-        }
+        }*/
         //let userTasks = userD.object(forKey: "savedTasksData") as? [Task] ?? [Task]()
         //tasks.append(contentsOf: userTasks)
         
@@ -141,6 +149,11 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     }
     
     func updateUserD() {
+        
+        let data = NSKeyedArchiver.archivedData(withRootObject: tasks)
+        userD.set(data, forKey: "tasks")
+        
+        /*
         if let encoded = try? JSONEncoder().encode(tasks) {
             userD.set(encoded, forKey: "savedTasksData")
             userD.set("gay", forKey: "lmao")
@@ -149,7 +162,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
                 print(tasks)
                 tableView.reloadData()
             }
-        }
+        }*/
     }
     
     /*
@@ -214,13 +227,33 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     }*/
     
 }
-
-class Task: Codable {
+// Codable,
+class Task: NSObject, NSCoding {
+    
     var name = ""
     var checked = false
     
+    init(name: String, checked: Bool) {
+        self.name = name
+        self.checked = checked
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.name, forKey: "name")
+        aCoder.encode(self.checked, forKey: "checked")
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        guard let name = aDecoder.decodeObject(forKey: "name") as? String else { return nil}
+        
+        self.init(
+            name: name,
+            checked: aDecoder.decodeBool(forKey: "checked")
+        )
+    }
+    
     convenience init(name: String) {
-        self.init()
+        self.init(name: name, checked: false)
         self.name = name
     }
 }
