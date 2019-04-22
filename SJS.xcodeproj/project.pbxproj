@@ -12,6 +12,8 @@
 		722676122262728B002B517A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 722676102262728B002B517A /* Main.storyboard */; };
 		722676142262728D002B517A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 722676132262728D002B517A /* Assets.xcassets */; };
 		722676172262728D002B517A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 722676152262728D002B517A /* LaunchScreen.storyboard */; };
+		723CD82C226D38180053F3AE /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723CD82B226D38180053F3AE /* TaskCell.swift */; };
+		723CD830226D4D0B0053F3AE /* AddTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723CD82F226D4D0B0053F3AE /* AddTaskController.swift */; };
 		72711A05226552BD005F635B /* JTAppleCalendar-master in Resources */ = {isa = PBXBuildFile; fileRef = 72711A04226552BD005F635B /* JTAppleCalendar-master */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +25,8 @@
 		722676132262728D002B517A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		722676162262728D002B517A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		722676182262728D002B517A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		723CD82B226D38180053F3AE /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
+		723CD82F226D4D0B0053F3AE /* AddTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskController.swift; sourceTree = "<group>"; };
 		72711A04226552BD005F635B /* JTAppleCalendar-master */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "JTAppleCalendar-master"; path = "../../../../Downloads/JTAppleCalendar-master"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,10 +63,12 @@
 				7226760C2262728B002B517A /* AppDelegate.swift */,
 				7226760E2262728B002B517A /* ViewController.swift */,
 				722676102262728B002B517A /* Main.storyboard */,
+				723CD82B226D38180053F3AE /* TaskCell.swift */,
 				722676132262728D002B517A /* Assets.xcassets */,
 				722676152262728D002B517A /* LaunchScreen.storyboard */,
 				722676182262728D002B517A /* Info.plist */,
 				72711A04226552BD005F635B /* JTAppleCalendar-master */,
+				723CD82F226D4D0B0053F3AE /* AddTaskController.swift */,
 			);
 			path = SJS;
 			sourceTree = "<group>";
@@ -140,6 +146,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7226760F2262728B002B517A /* ViewController.swift in Sources */,
+				723CD82C226D38180053F3AE /* TaskCell.swift in Sources */,
+				723CD830226D4D0B0053F3AE /* AddTaskController.swift in Sources */,
 				7226760D2262728B002B517A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

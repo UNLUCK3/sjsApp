@@ -11,8 +11,10 @@ import SafariServices
 import EventKit
 import EventKitUI
 
-class ViewController: UIViewController, SFSafariViewControllerDelegate {
+class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, AddTask, ChangeButton {
     
+    let userD = UserDefaults.standard
+    var tasks: [Task] = []
     //let eventStore = EKEventStore()
     
     //var calendars: [EKCalendar]?
@@ -24,8 +26,10 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
     var timer = Timer()
     
     //IBOutlets for the dateLabels
+    @IBOutlet weak var sjsIcon: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dateLabel2: UILabel!
+    @IBOutlet weak var tableView: UITableView!
     //@IBOutlet weak var tableView: UITableView!
     //@IBOutlet weak var permissionButton: UIButton!
     
@@ -100,6 +104,15 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        print(tasks)
+        if let tasksData = userD.data(forKey: "savedTasksData"), let savedTasksData = try? JSONDecoder().decode(Task.self, from: tasksData) {
+            tasks.append(savedTasksData)
+            print(tasks)
+            tableView.reloadData()
+        }
+        //let userTasks = userD.object(forKey: "savedTasksData") as? [Task] ?? [Task]()
+        //tasks.append(contentsOf: userTasks)
+        
         //permissionButton.isHidden = true
         
         //Requesting access to the calendar
@@ -125,6 +138,51 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         //checkCalendarAuthStatus()
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tasks.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskCell
+        
+        cell.taskNameLabel.text = tasks[indexPath.row].name
+        
+        if tasks[indexPath.row].checked {
+            cell.checkBoxOutlet.setBackgroundImage(#imageLiteral(resourceName: "checkBoxFILLED "), for: UIControl.State.normal)
+        } else {
+            cell.checkBoxOutlet.setBackgroundImage(#imageLiteral(resourceName: "checkBoxOUTLINE "), for: UIControl.State.normal)
+        }
+        
+        cell.delegate = self
+        cell.indexP = indexPath.row
+        cell.tasks = tasks
+        
+        return cell
+    }
+    
+    func changeButton(checked: Bool, index: Int) {
+        tasks[index].checked = checked
+        tableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination as! AddTaskController
+        vc.delegate = self
+    }
+    
+    func addTask(name: String) {
+        tasks.append(Task(name: name))
+        updateUserD()
+        tableView.reloadData()
+    }
+    
+    func updateUserD() {
+        if let encoded = try? JSONEncoder().encode(tasks) {
+            userD.set(encoded, forKey: "savedTasksData")
+        }
+    }
+    
     /*
     func checkCalendarAuthStatus() {
         let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
@@ -153,6 +211,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         formatter2.dateStyle = .none
         dateLabel.text = formatter.string(from: DateTime)
         dateLabel2.text = formatter2.string(from: DateTime)
+        //updateUserD()
     }
     /*
     func requestCalendarAccess() {
@@ -185,4 +244,14 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         tableView.reloadData()
     }*/
     
+}
+
+class Task: Codable {
+    var name = ""
+    var checked = false
+    
+    convenience init(name: String) {
+        self.init()
+        self.name = name
+    }
 }
