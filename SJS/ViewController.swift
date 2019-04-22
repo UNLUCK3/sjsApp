@@ -33,31 +33,6 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     //@IBOutlet weak var tableView: UITableView!
     //@IBOutlet weak var permissionButton: UIButton!
     
-    /*func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1 // This was put in mainly for my own unit testing
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let calendars = self.calendars {
-            return calendars.count
-        }
-        
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "basicCell")!
-        
-        if let calendars = self.calendars {
-            let calendarName = calendars[(indexPath as NSIndexPath).row].title
-            cell.textLabel?.text = calendarName
-        } else {
-            cell.textLabel?.text = "Unknown Calendar Name"
-        }
-        
-        return cell
-    }*/
-    
     //The following code manages the links at the bottom of the screen, and calling in-app safari to show the linked content.
     //When one of the link buttons is pressed, the corresponding logic will be executed
     //Open ManageBac
@@ -105,39 +80,27 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
         // Do any additional setup after loading the view, typically from a nib.
         
         print(tasks)
-        if let tasksData = userD.data(forKey: "savedTasksData"), let savedTasksData = try? JSONDecoder().decode(Task.self, from: tasksData) {
-            tasks.append(savedTasksData)
+        if let tasksData = userD.data(forKey: "savedTasksData"), let tasks = try? JSONDecoder().decode(Task.self, from: tasksData) {
             print(tasks)
             tableView.reloadData()
         }
         //let userTasks = userD.object(forKey: "savedTasksData") as? [Task] ?? [Task]()
         //tasks.append(contentsOf: userTasks)
         
-        //permissionButton.isHidden = true
-        
-        //Requesting access to the calendar
-        //requestCalendarAccess()
-        //Capture the current date at initialisation
-        let currentDateTime = Date()
-        
-        //Format the top label styles (dateLabel)
-        formatter.timeStyle = .none
-        formatter.dateStyle = .medium
-        //Format the bottom label styles (dateLabel2)
-        formatter2.timeStyle = .medium
-        formatter2.dateStyle = .none
-        
-        //Update both labels so as to not show the placeholders
-        dateLabel.text = formatter.string(from: currentDateTime)
-        dateLabel2.text = formatter2.string(from: currentDateTime)
-        
         //Schedule a timer to update the dateLabels every minute
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updatedateLabel), userInfo: nil, repeats: true);
     }
     
+    /*
     override func viewWillAppear(_ animated: Bool) {
         //checkCalendarAuthStatus()
-    }
+        if let tasksData = userD.data(forKey: "savedTasksData"), let savedTasksData = try? JSONDecoder().decode(Task.self, from: tasksData) {
+            userD.synchronize()
+            tasks.append(savedTasksData)
+            print(tasks)
+            tableView.reloadData()
+        }
+    }*/
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
@@ -180,6 +143,12 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     func updateUserD() {
         if let encoded = try? JSONEncoder().encode(tasks) {
             userD.set(encoded, forKey: "savedTasksData")
+            userD.set("gay", forKey: "lmao")
+            if let tasksData = userD.data(forKey: "savedTasksData"), let decodedTasks = try? JSONDecoder().decode(Task.self, from: tasksData) {
+                tasks.append(decodedTasks)
+                print(tasks)
+                tableView.reloadData()
+            }
         }
     }
     
@@ -199,7 +168,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate, UITableV
     }
     
     /*
-     This function runs every minute, and updates the dateLabels.
+     This function runs every second, and updates the dateLabels.
      This function should eventually be split to only update the minutes every minute, and the date every day if time is available.
     */*/
     @objc func updatedateLabel() {
